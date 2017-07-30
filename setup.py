@@ -5,6 +5,8 @@ setup(
     version="0.1.0a1",
     author='Martin Malek',
     author_email='martin.malek@pagewiser.com',
+    url='https://pypi.python.org/pypi/loco-cli/',
+    download_url='https://github.com/marten-cz/loco-cli',
     packages=['localise'],
     description='Command line utiltiy for Localise.biz.',
     install_requires=[
