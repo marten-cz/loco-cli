@@ -3,6 +3,12 @@
 import argparse
 from colorama import init, Fore, Back, Style
 from commands import *
+import signal
+import sys
+
+def signal_handler(signal, frame):
+    print("\nInterrupted!")
+    sys.exit(0)
 
 def get_configuration(args):
     from os.path import expanduser
@@ -59,4 +65,5 @@ def main():
 
 
 if __name__ == '__main__':
+    signal.signal(signal.SIGINT, signal_handler)
     main()
