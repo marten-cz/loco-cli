@@ -13,7 +13,7 @@ def get_url(conf):
     return 'https://localise.biz/api/'
 
 
-def config():
+def config(args):
     token = raw_input('Localise API token [None]: ')
 
     data = dict(
@@ -40,6 +40,8 @@ def config():
     from os.path import expanduser
     home = expanduser("~")
     config_file = home + '/.localise/config.yml'
+    if hasattr(args, config_file):
+        config_file = args.config_file
 
     if not os.path.exists(os.path.dirname(config_file)):
         os.makedirs(os.path.dirname(config_file))

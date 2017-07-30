@@ -8,6 +8,8 @@ def get_configuration(args):
     from os.path import expanduser
     home = expanduser("~")
     config_file = home + '/.localise/config.yml'
+    if hasattr(args, config_file):
+        config_file = args.config_file
 
     if not os.path.isfile(config_file):
         print(Fore.RED + 'No configuration file found! Run the following command to create one:' + Style.RESET_ALL)
@@ -33,14 +35,17 @@ def command(args):
     elif args.command == 'pull':
         pull(configuration)
     elif args.command == 'config':
-        config()
+        config(args)
     else:
-        sys.exit(Fore.RED + 'Not a valid command! Did you mean config, push, or pull?' + Style.RESET_ALL)
+        sys.exit(Fore.RED + "Not a valid command \"%s\"! Did you mean config, push, or pull?" % (
+        args.command) + Style.RESET_ALL)
 
 
 def parse_args():
     p = argparse.ArgumentParser(description='Localise')
     p.add_argument('command', nargs='?', help='an integer for the accumulator')
+
+    p.add_argument("-c", "--config", dest="config_file", help="Specify config file", metavar="FILE")
 
     args = p.parse_args()
 
