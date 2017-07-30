@@ -49,7 +49,7 @@ def command(args):
 
 def parse_args():
     p = argparse.ArgumentParser(description='Localise')
-    p.add_argument('command', nargs='?', help='an integer for the accumulator')
+    p.add_argument('command', nargs='?', help='Specify command: push, pull, config')
 
     p.add_argument("-c", "--config", dest="config_file", help="Specify config file", metavar="FILE")
 
