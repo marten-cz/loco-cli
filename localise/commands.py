@@ -14,6 +14,14 @@ def get_url(conf):
 
 
 def config(args):
+    from os.path import expanduser
+    home = expanduser("~")
+    config_file = home + '/.localise/config.yml'
+    if hasattr(args, config_file):
+        config_file = args.config_file
+
+    print "Create config file in %s" % (config_file)
+
     token = raw_input('Localise API token [None]: ')
 
     data = dict(
@@ -36,12 +44,6 @@ def config(args):
         pull=dict(
         )
     )
-
-    from os.path import expanduser
-    home = expanduser("~")
-    config_file = home + '/.localise/config.yml'
-    if hasattr(args, config_file):
-        config_file = args.config_file
 
     if not os.path.exists(os.path.dirname(config_file)):
         os.makedirs(os.path.dirname(config_file))
