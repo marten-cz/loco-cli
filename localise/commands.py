@@ -112,9 +112,12 @@ def pull(conf):
 
         if r.status_code != 200:
             message = 'Something went wrong.'
-            res = json.loads(r.text)
-            if res['meta']['error']['message']:
-                message = res['meta']['error']['message'] + ' for file ' + translation['file']
+            try:
+                res = json.loads(r.text)
+                if res['meta']['error']['message']:
+                    message = res['meta']['error']['message'] + ' for file ' + translation['file']
+            except (ValueError) as e:
+                message = 'Wrong response format'
 
             errors.append(message)
         else:
