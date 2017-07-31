@@ -51,7 +51,7 @@ def config(args):
         out.write(yaml.dump(data, default_flow_style=False))
 
 
-def push(conf):
+def push(conf, args):
     errors = []
 
     if not 'translations' in conf:
@@ -94,7 +94,7 @@ def push(conf):
             len(conf['translations'])) + ' file(s) to Localise.biz!' + Style.RESET_ALL)
 
 
-def pull(conf):
+def pull(conf, args):
     errors = []
 
     if not 'translations' in conf:
@@ -118,6 +118,8 @@ def pull(conf):
                     message = res['meta']['error']['message'] + ' for file ' + translation['file']
             except (ValueError) as e:
                 message = 'Wrong response format'
+                if hasattr(args, 'verbose') and args.verbose > 0:
+                    errors.append(r.text)
 
             errors.append(message)
         else:

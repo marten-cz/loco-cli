@@ -37,9 +37,9 @@ def command(args):
         configuration = get_configuration(args)
 
     if args.command == 'push':
-        push(configuration)
+        push(configuration, args)
     elif args.command == 'pull':
-        pull(configuration)
+        pull(configuration, args)
     elif args.command == 'config':
         config(args)
     else:
@@ -52,6 +52,7 @@ def parse_args():
     p.add_argument('command', nargs='?', help='Specify command: push, pull, config')
 
     p.add_argument("-c", "--config", dest="config_file", help="Specify config file", metavar="FILE")
+    p.add_argument('--verbose', '-v', action='count')
 
     args = p.parse_args()
 
