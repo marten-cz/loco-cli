@@ -17,7 +17,7 @@ def config(args):
     from os.path import expanduser
     home = expanduser("~")
     config_file = home + '/.localise/config.yml'
-    if hasattr(args, config_file):
+    if 'config_file' in args:
         config_file = args.config_file
 
     print "Create config file in %s" % (config_file)
