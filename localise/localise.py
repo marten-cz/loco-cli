@@ -6,15 +6,25 @@ from commands import *
 import signal
 import sys
 
+class ConfigException(Exception):
+    """Raise when config file is invalid"""
+
 def signal_handler(signal, frame):
     print("\nInterrupted!")
     sys.exit(0)
 
 def get_configuration(args):
+    """
+    Parse configuration file
+
+    Throw an exception when file does not exists or has wrong format.
+    :param args:
+    :return:
+    """
     from os.path import expanduser
     home = expanduser("~")
     config_file = home + '/.localise/config.yml'
-    if hasattr(args, config_file):
+    if hasattr(args, 'config_file'):
         config_file = args.config_file
 
     if not os.path.isfile(config_file):
@@ -29,12 +39,21 @@ def get_configuration(args):
     with open(config_file, 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
 
+    if not 'api' in cfg or not 'token' in cfg['api'] or not cfg['api']['token']:
+        raise ConfigException('Missing token value in config file')
+    if not 'translations' in cfg:
+        raise ConfigException('No translation files defined in config file')
+
     return cfg
 
 
 def command(args):
     if not args.command == 'config':
-        configuration = get_configuration(args)
+        try:
+            configuration = get_configuration(args)
+        except ConfigException as e:
+            print(e.message)
+            return
 
     if args.command == 'push':
         push(configuration, args)
