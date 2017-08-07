@@ -1,5 +1,8 @@
 # Localise.biz CLI
 
+[![PyPI version](https://img.shields.io/pypi/v/loco-cli.svg)](https://pypi.python.org/pypi/loco-cli)
+[![Build](https://travis-ci.org/marten-cz/loco-cli.svg?branch=master)](https://travis-ci.org/marten-cz/loco-cli)
+
 ## Run
 
 If you didn't used the script before, just run:
