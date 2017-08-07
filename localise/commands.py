@@ -77,7 +77,9 @@ def push(conf, args):
         url = get_url(conf) + 'import/%s' % (translation['format'])
 
         r = requests.post(url, params=params, data={'src': file})
-        if r.status_code != 200:
+        if r.status_code == 401:
+            errors.append('Invalid API key in config file')
+        elif r.status_code != 200:
             message = 'Something went wrong. Please contact support.'
             res = json.loads(r.text)
             if r['error']:
@@ -110,7 +112,9 @@ def pull(conf, args):
 
         r = requests.get(url, stream=True, auth=(conf['api']['token'], ''))
 
-        if r.status_code != 200:
+        if r.status_code == 401:
+            errors.append('Invalid API key in config file')
+        elif r.status_code != 200:
             message = 'Something went wrong.'
             try:
                 res = json.loads(r.text)
@@ -132,7 +136,10 @@ def pull(conf, args):
     # If there are any errors display them to the user
     if errors:
         for error in errors:
-            print(Fore.RED + error + Style.RESET_ALL)
+            print_error(error + Style.RESET_ALL)
     else:
         sys.exit(Fore.GREEN + 'Successfully pulled ' + str(
             len(conf['translations'])) + ' file(s) from Localise.biz!' + Style.RESET_ALL)
+
+def print_error(message, severity = 1, verbose = 0):
+    print(Fore.RED + message + Style.RESET_ALL)
