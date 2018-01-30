@@ -12,7 +12,8 @@ setup(
     install_requires=[
         "requests==2.10.0",
         "colorama>=0.2.5,<=0.3.3",
-        "pyyaml==3.11"
+        "pyyaml==3.11",
+        "six==1.11.0"
     ],
     entry_points={
         'console_scripts': [
@@ -27,6 +28,7 @@ setup(
                  "License :: OSI Approved :: MIT License",
                  "Operating System :: OS Independent",
                  "Topic :: Software Development :: Localization",
-                 "Programming Language :: Python :: 2.7"
+                 "Programming Language :: Python :: 2.7",
+                 "Programming Language :: Python :: 3"
                  ]
 )
