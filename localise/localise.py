@@ -25,7 +25,7 @@ def get_configuration(args):
     from os.path import expanduser
     home = expanduser("~")
     config_file = home + '/.localise/config.yml'
-    if hasattr(args, 'config_file'):
+    if hasattr(args, 'config_file') and args.config_file:
         config_file = args.config_file
 
     if not os.path.isfile(config_file):
