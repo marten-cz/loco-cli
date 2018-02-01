@@ -78,6 +78,7 @@ def parse_args():
     parser.add_argument('project', nargs='?', default='default', help='Specify project name')
 
     parser.add_argument("-c", "--config", dest="config_file", help="Specify config file", metavar="FILE")
+    parser.add_argument("-t", "--token", dest="token", help="Specify token")
     parser.add_argument('--verbose', '-v', action='count')
 
     args = parser.parse_args()
@@ -93,7 +94,7 @@ def main():
 def check_config_section(cfg, args, section):
     if not section in cfg:
         raise ConfigException('Unknown project identificator "%s". Check that your config is in project parent.' % (section))
-    if not 'api' in cfg[section] or not 'token' in cfg[section]['api'] or not cfg[section]['api']['token']:
+    if not args.token and (not 'api' in cfg[section] or not 'token' in cfg[section]['api'] or not cfg[section]['api']['token']):
         raise ConfigException('Missing token value in config file')
     if not 'translations' in cfg[section]:
         raise ConfigException('No translation files defined in config file')
