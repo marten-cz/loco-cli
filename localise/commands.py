@@ -25,23 +25,25 @@ def config(args):
     token = input('Localise API token [None]: ')
 
     data = dict(
-        api=dict(
-            token=token
-        ),
-        translations=[
-            dict(
-                locale='en-US',
-                format='po',
-                file='/tmp/locale/en/messages.po'
+        default=dict(
+            api=dict(
+                token=token
+            ),
+            translations=[
+                dict(
+                    locale='en-US',
+                    format='po',
+                    file='/tmp/locale/en/messages.po'
+                )
+            ],
+            push={
+                "index": 'id',
+                "ignore-new": 'false',
+                "ignore-existing": 'false',
+                "delete-absent": 'false'
+            },
+            pull=dict(
             )
-        ],
-        push={
-            "index": 'id',
-            "ignore-new": 'false',
-            "ignore-existing": 'false',
-            "delete-absent": 'false'
-        },
-        pull=dict(
         )
     )
 
