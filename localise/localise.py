@@ -53,7 +53,7 @@ def command(args):
         try:
             configuration = get_configuration(args)
         except ConfigException as e:
-            print(e.message)
+            print(str(e))
             return
 
     if args.command == 'push':
