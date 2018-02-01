@@ -1,15 +1,16 @@
 #!/usr/bin/env python
-
 import argparse
-from colorama import init, Fore, Back, Style
-from commands import *
 import signal
 import sys
+import os
+from colorama import init, Fore, Back, Style
+from commands import *
+
 
 class ConfigException(Exception):
     """Raise when config file is invalid"""
 
-def signal_handler(signal, frame):
+def signal_handler(caught_signal, frame):
     print("\nInterrupted!")
     sys.exit(0)
 
@@ -39,9 +40,9 @@ def get_configuration(args):
     with open(config_file, 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
 
-    if not 'api' in cfg or not 'token' in cfg['api'] or not cfg['api']['token']:
+    if 'api' not in cfg or 'token' not in cfg['api'] or not cfg['api']['token']:
         raise ConfigException('Missing token value in config file')
-    if not 'translations' in cfg:
+    if 'translations' not in cfg:
         raise ConfigException('No translation files defined in config file')
 
     return cfg
@@ -67,13 +68,13 @@ def command(args):
 
 
 def parse_args():
-    p = argparse.ArgumentParser(description='Localise')
-    p.add_argument('command', nargs='?', help='Specify command: push, pull, config')
+    parser = argparse.ArgumentParser(description='Localise')
+    parser.add_argument('command', nargs='?', help='Specify command: push, pull, config')
 
-    p.add_argument("-c", "--config", dest="config_file", help="Specify config file", metavar="FILE")
-    p.add_argument('--verbose', '-v', action='count')
+    parser.add_argument("-c", "--config", dest="config_file", help="Specify config file", metavar="FILE")
+    parser.add_argument('--verbose', '-v', action='count')
 
-    args = p.parse_args()
+    args = parser.parse_args()
 
     return args
 

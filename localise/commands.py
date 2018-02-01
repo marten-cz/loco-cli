@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-
 import sys
 import yaml
 import os
 import requests
 import json
 
+from six.moves import input
 from colorama import Fore, Back, Style
 
 
@@ -20,9 +20,9 @@ def config(args):
     if 'config_file' in args:
         config_file = args.config_file
 
-    print "Create config file in %s" % (config_file)
+    print("Create config file in %s" % (config_file))
 
-    token = raw_input('Localise API token [None]: ')
+    token = input('Localise API token [None]: ')
 
     data = dict(
         api=dict(
@@ -54,17 +54,17 @@ def config(args):
 def push(conf, args):
     errors = []
 
-    if not 'translations' in conf:
+    if 'translations' not in conf:
         sys.exit(
             Fore.RED + 'Could not find any translations to pull. Please make sure your configuration is formed correctly.' + Style.RESET_ALL)
 
     for translation in conf['translations']:
-        if not 'locale' in translation or not 'format' in translation or not 'file' in translation:
+        if 'locale' not in translation or 'format' not in translation or 'file' not in translation:
             sys.exit(Fore.RED + 'Missing translation data.' + Style.RESET_ALL)
 
         try:
-            with open(translation['file']) as f:
-                file = f.read()
+            with open(translation['file']) as translation_file:
+                file = translation_file.read()
         except (IOError, OSError) as e:
             errors.append('Error: ' + str(e))
             break
@@ -76,13 +76,13 @@ def push(conf, args):
         ))
         url = get_url(conf) + 'import/%s' % (translation['format'])
 
-        r = requests.post(url, params=params, data={'src': file})
-        if r.status_code == 401:
+        response = requests.post(url, params=params, data={'src': file})
+        if response.status_code == 401:
             errors.append('Invalid API key in config file')
-        elif r.status_code != 200:
+        elif response.status_code != 200:
             message = 'Something went wrong. Please contact support.'
-            res = json.loads(r.text)
-            if r['error']:
+            res = json.loads(response.text)
+            if response['error']:
                 message = res['error'] + ' for file ' + translation['file']
 
             errors.append(message)
@@ -99,7 +99,7 @@ def push(conf, args):
 def pull(conf, args):
     errors = []
 
-    if not 'translations' in conf:
+    if 'translations' not in conf:
         sys.exit(
             Fore.RED + 'Could not find any translations to pull. Please make sure your configuration is formed correctly.' + Style.RESET_ALL)
 
@@ -110,28 +110,28 @@ def pull(conf, args):
         url = get_url(conf) + 'export/locale/%s.%s?format=%s' % (
             translation['locale'], translation['format'], translation['format'])
 
-        r = requests.get(url, stream=True, auth=(conf['api']['token'], ''))
+        response = requests.get(url, stream=True, auth=(conf['api']['token'], ''))
 
-        if r.status_code == 401:
+        if response.status_code == 401:
             errors.append('Invalid API key in config file')
-        elif r.status_code != 200:
+        elif response.status_code != 200:
             message = 'Something went wrong.'
             try:
-                res = json.loads(r.text)
+                res = json.loads(response.text)
                 if res['meta']['error']['message']:
                     message = res['meta']['error']['message'] + ' for file ' + translation['file']
             except (ValueError) as e:
                 message = 'Wrong response format'
                 if hasattr(args, 'verbose') and args.verbose > 0:
-                    errors.append(r.text)
+                    errors.append(response.text)
 
             errors.append(message)
         else:
             # Swap put the content of the file with the data
-            with open(translation['file'], 'wb') as file:
-                for chunk in r.iter_content(chunk_size=1024):
+            with open(translation['file'], 'wb') as translation_file:
+                for chunk in response.iter_content(chunk_size=1024):
                     if chunk:
-                        file.write(chunk)
+                        translation_file.write(chunk)
 
     # If there are any errors display them to the user
     if errors:
@@ -141,5 +141,5 @@ def pull(conf, args):
         sys.exit(Fore.GREEN + 'Successfully pulled ' + str(
             len(conf['translations'])) + ' file(s) from Localise.biz!' + Style.RESET_ALL)
 
-def print_error(message, severity = 1, verbose = 0):
+def print_error(message, severity=1, verbose=0):
     print(Fore.RED + message + Style.RESET_ALL)
