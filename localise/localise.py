@@ -4,7 +4,10 @@ import signal
 import sys
 import os
 from colorama import init, Fore, Back, Style
-from commands import *
+if __package__ is None:
+    from commands import *
+else:
+    from .commands import *
 
 
 class ConfigException(Exception):
