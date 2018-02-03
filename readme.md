@@ -3,6 +3,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/loco-cli.svg)](https://pypi.python.org/pypi/loco-cli)
 [![PyPI downloads](https://img.shields.io/pypi/d/loco-cli.svg)](https://pypi.python.org/pypi/loco-cli)
 [![Build](https://travis-ci.org/marten-cz/loco-cli.svg?branch=master)](https://travis-ci.org/marten-cz/loco-cli)
+[![Analytics](https://ga-beacon.appspot.com/UA-24215296-4/marten-cz/loco-cli/)](https://github.com/igrigorik/ga-beacon)
 
 ## Run the cli command
 
