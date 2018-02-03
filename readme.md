@@ -4,19 +4,26 @@
 [![PyPI downloads](https://img.shields.io/pypi/d/loco-cli.svg)](https://pypi.python.org/pypi/loco-cli)
 [![Build](https://travis-ci.org/marten-cz/loco-cli.svg?branch=master)](https://travis-ci.org/marten-cz/loco-cli)
 
-## Run
+## Run the cli command
 
-If you didn't used the script before, just run:
+### Requirements
 
-    python localise/localise.py config
+This package need python to be installed. We support Python2 and Python3 as well.
 
-and it will create configuration file in your home directory.
+### Install
 
-You will have to setup push part in the config as you need.
+To instal you can use the repository or install the package from PyPI.
 
-Call https://localise.biz/api#!/import/import
+    pip install loco-cli
 
-Then add synchronized files you need.
+To use the cli command, just type `loco-cli`. You need to have the python path in your PATH environment variable.
+When you use the command for first time, you will need to create configuration file. Just run
+`loco-cli -p <project name> config`. You can specify the path to config file with `-c <path>`.
+
+You will have to setup push and pull config section as you need. See https://localise.biz/api#!/import/import for
+supported variables.
+
+Then add path to synchronized files as you need.
 
 After that you can call `localise.py pull` and `localise.py push`.
 
