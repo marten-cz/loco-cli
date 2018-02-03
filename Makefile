@@ -10,8 +10,14 @@ upload-test:
 	python setup.py sdist upload -r pypitest
 
 testpypi:
-	virtualenv --clear --always-copy pypitest
-	#bash -c "source pypitest/bin/activate && pip install -r requirements.txt && pip install -i https://testpypi.python.org/pypi loco-cli && loco-cli config"
+	# Python2
+	virtualenv -p `which python2` --clear --always-copy pypitest
+	pypitest/bin/pip install -r requirements.txt
+	pypitest/bin/pip install -i https://testpypi.python.org/pypi loco-cli
+	echo "testapikey" | pypitest/bin/loco-cli config
+
+	# Python3
+	virtualenv -p `which python3` --clear --always-copy pypitest
 	pypitest/bin/pip install -r requirements.txt
 	pypitest/bin/pip install -i https://testpypi.python.org/pypi loco-cli
 	echo "testapikey" | pypitest/bin/loco-cli config
