@@ -1,12 +1,13 @@
-api:
-  token: 'mytoken'
-pull: {}
-push:
-  delete-absent: 'false'
-  ignore-existing: 'false'
-  ignore-new: 'false'
-  index: id
-translations:
-- file: /tmp/locale/en/messages.po
-  format: po
-  locale: en-US
+default:
+  api:
+    token: 'mytoken'
+  pull: {}
+  push:
+    delete-absent: 'false'
+    ignore-existing: 'false'
+    ignore-new: 'false'
+    index: id
+  translations:
+  - file: /tmp/locale/en/messages.po
+    format: po
+    locale: en-US
