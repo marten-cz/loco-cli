@@ -70,10 +70,13 @@ def push(conf, args):
         except (IOError, OSError) as e:
             errors.append('Error: ' + str(e))
             break
+        token = getattr(args, 'token')
+        if not token:
+            token = conf['api']['token']
 
         params = conf['push']
         params.update(dict(
-            key=getattr(args, 'token', conf['api']['token']),
+            key=token,
             locale=translation['locale']
         ))
         url = get_url(conf) + 'import/%s' % (translation['format'])
@@ -112,7 +115,10 @@ def pull(conf, args):
         url = get_url(conf) + 'export/locale/%s.%s?format=%s' % (
             translation['locale'], translation['format'], translation['format'])
 
-        response = requests.get(url, stream=True, auth=(getattr(args, 'token', conf['api']['token']), ''))
+        token = getattr(args, 'token')
+        if not token:
+            token = conf['api']['token']
+        response = requests.get(url, stream=True, auth=(token, ''))
 
         if response.status_code == 401:
             errors.append('Invalid API key in config file')
