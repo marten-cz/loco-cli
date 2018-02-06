@@ -97,9 +97,15 @@ def main():
 def check_config_section(cfg, args, section):
     if not section in cfg:
         raise ConfigException('Unknown project identificator "%s". Check that your config is in project parent.' % (section))
-    if not args.token and (not 'api' in cfg[section] or not 'token' in cfg[section]['api'] or not cfg[section]['api']['token']):
-        raise ConfigException('Missing token value in config file')
-    if not 'translations' in cfg[section]:
+    try:
+        token = cfg[section]['api']['token']
+        if not token:
+            raise TypeError('Empty token')
+    except (KeyError, TypeError):
+        token = None  # or whatever
+        if not args.token:
+            raise ConfigException('Missing token value in config file')
+    if not 'translations' in cfg[section] or not cfg[section]['translations']:
         raise ConfigException('No translation files defined in config file')
 
 if __name__ == '__main__':
