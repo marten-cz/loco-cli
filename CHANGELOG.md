@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 -
 
+## 0.2.2 2018-02-12
+
+### Fix
+
+- Fixed token retrieving from config file
+
+## 0.2.1 2018-02-03
+
+### Fix
+
+- Fixed include paths for Python3
+
 ## 0.2.0 2018-02-01
 
 ### Added
