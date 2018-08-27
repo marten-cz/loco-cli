@@ -87,7 +87,7 @@ def push(conf, args):
         elif response.status_code != 200:
             message = 'Something went wrong. Please contact support.'
             res = json.loads(response.text)
-            if response['error']:
+            if 'error' in res and res['error']:
                 message = res['error'] + ' for file ' + translation['file']
 
             errors.append(message)
