@@ -81,7 +81,7 @@ def push(conf, args):
         ))
         url = get_url(conf) + 'import/%s' % (translation['format'])
 
-        response = requests.post(url, params=params, data={'src': file})
+        response = requests.post(url, params=params, data=file)
         if response.status_code == 401:
             errors.append('Invalid API key in config file')
         elif response.status_code != 200:
