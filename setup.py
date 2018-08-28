@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="loco-cli",
-    version="0.2.3",
+    version="0.2.4",
     author='Martin Malek',
     author_email='martin.malek@pagewiser.com',
     url='https://pypi.python.org/pypi/loco-cli/',
