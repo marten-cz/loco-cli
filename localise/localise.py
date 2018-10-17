@@ -52,7 +52,7 @@ def command(args):
             configuration = get_configuration(args)
         except ConfigException as e:
             print(str(e))
-            return
+            sys.exit(1)
 
     try:
         if args.command == 'list':
@@ -70,9 +70,10 @@ def command(args):
         else:
             sys.exit(Fore.RED + "Not a valid command \"%s\"! Did you mean config, push, or pull?" % (
             args.command) + Style.RESET_ALL)
+        sys.exit()
     except ConfigException as e:
         print(str(e))
-        return
+        sys.exit(1)
 
 
 def parse_args():
