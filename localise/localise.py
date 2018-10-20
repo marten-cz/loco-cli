@@ -4,11 +4,13 @@ import signal
 import sys
 import os
 from colorama import init, Fore, Back, Style
-if __package__ is None:
-    from commands import *
-else:
-    from .commands import *
 
+try:
+    from .commands import *
+    from .helper import *
+except SystemError:
+    from commands import *
+    from helper import *
 
 class ConfigException(Exception):
     """Raise when config file is invalid"""
@@ -38,7 +40,7 @@ def get_configuration(args):
         print('')
         print('You can also create the file manually in your $HOME directory: $HOME/.localise/config.yml')
         print('')
-        sys.exit()
+        sys.exit(1)
 
     with open(config_file, 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
@@ -68,10 +70,13 @@ def command(args):
         elif args.command == 'config':
             config(args)
         else:
-            sys.exit(Fore.RED + "Not a valid command \"%s\"! Did you mean config, push, or pull?" % (
-            args.command) + Style.RESET_ALL)
-        sys.exit()
+            print_error("Not a valid command \"%s\"! Did you mean config, push, or pull?" % (args.command))
+            sys.exit(1)
+        sys.exit(0)
     except ConfigException as e:
+        print(str(e))
+        sys.exit(1)
+    except OperationException as e:
         print(str(e))
         sys.exit(1)
 

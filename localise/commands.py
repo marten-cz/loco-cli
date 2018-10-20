@@ -6,8 +6,11 @@ import requests
 import json
 
 from six.moves import input
-from colorama import Fore, Back, Style
 
+try:
+    from .helper import *
+except SystemError:
+    from helper import *
 
 def get_url(conf):
     return 'https://localise.biz/api/'
@@ -57,12 +60,11 @@ def push(conf, args):
     errors = []
 
     if 'translations' not in conf:
-        sys.exit(
-            Fore.RED + 'Could not find any translations to pull. Please make sure your configuration is formed correctly.' + Style.RESET_ALL)
+        raise OperationException('Could not find any translations to pull. Please make sure your configuration is formed correctly.')
 
     for translation in conf['translations']:
         if 'locale' not in translation or 'format' not in translation or 'file' not in translation:
-            sys.exit(Fore.RED + 'Missing translation data.' + Style.RESET_ALL)
+            raise OperationException('Missing translation data.')
 
         try:
             with open(translation['file']) as translation_file:
@@ -96,21 +98,20 @@ def push(conf, args):
     if errors:
         for error in errors:
             print(Fore.RED + error + Style.RESET_ALL)
+        raise OperationException()
     else:
-        sys.exit(Fore.GREEN + 'Successfully pushed ' + str(
-            len(conf['translations'])) + ' file(s) to Localise.biz!' + Style.RESET_ALL)
+        print_success('Successfully pushed ' + str(len(conf['translations'])) + ' file(s) to Localise.biz!')
 
 
 def pull(conf, args):
     errors = []
 
     if 'translations' not in conf:
-        sys.exit(
-            Fore.RED + 'Could not find any translations to pull. Please make sure your configuration is formed correctly.' + Style.RESET_ALL)
+        raise OperationException('Could not find any translations to pull. Please make sure your configuration is formed correctly.')
 
     for translation in conf['translations']:
         if not 'locale' in translation or not 'format' in translation or not 'file' in translation:
-            sys.exit(Fore.RED + 'Missing translation data.' + Style.RESET_ALL)
+            raise OperationException('Missing translation data.')
 
         url = get_url(conf) + 'export/locale/%s.%s?format=%s' % (
             translation['locale'], translation['format'], translation['format'])
@@ -145,9 +146,8 @@ def pull(conf, args):
     if errors:
         for error in errors:
             print_error(error + Style.RESET_ALL)
-    else:
-        sys.exit(Fore.GREEN + 'Successfully pulled ' + str(
-            len(conf['translations'])) + ' file(s) from Localise.biz!' + Style.RESET_ALL)
+        raise OperationException()
 
-def print_error(message, severity=1, verbose=0):
-    print(Fore.RED + message + Style.RESET_ALL)
+    else:
+        print_success('Successfully pulled ' + str(len(conf['translations'])) + ' file(s) from Localise.biz!')
+
