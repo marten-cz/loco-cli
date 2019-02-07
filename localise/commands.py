@@ -97,7 +97,7 @@ def push(conf, args):
         for error in errors:
             print(Fore.RED + error + Style.RESET_ALL)
     else:
-        sys.exit(Fore.GREEN + 'Successfully pushed ' + str(
+        print(Fore.GREEN + 'Successfully pushed ' + str(
             len(conf['translations'])) + ' file(s) to Localise.biz!' + Style.RESET_ALL)
 
 
@@ -146,7 +146,7 @@ def pull(conf, args):
         for error in errors:
             print_error(error + Style.RESET_ALL)
     else:
-        sys.exit(Fore.GREEN + 'Successfully pulled ' + str(
+        print(Fore.GREEN + 'Successfully pulled ' + str(
             len(conf['translations'])) + ' file(s) from Localise.biz!' + Style.RESET_ALL)
 
 def print_error(message, severity=1, verbose=0):
