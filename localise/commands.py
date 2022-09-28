@@ -16,7 +16,7 @@ def get_url(conf):
 def config(args):
     from os.path import expanduser
     home = expanduser("~")
-    config_file = home + '/.localise/config.yml'
+    config_file = os.getcwd() + '/.loco-cli.yml'
     if hasattr(args, 'config_file') and args.config_file:
         config_file = args.config_file
 
@@ -42,8 +42,10 @@ def config(args):
                 "ignore-existing": 'false',
                 "delete-absent": 'false'
             },
-            pull=dict(
-            )
+            pull={
+                "index": 'id',
+                "order": 'id'
+            }
         )
     )
 
@@ -112,8 +114,8 @@ def pull(conf, args):
         if not 'locale' in translation or not 'format' in translation or not 'file' in translation:
             sys.exit(Fore.RED + 'Missing translation data.' + Style.RESET_ALL)
 
-        url = get_url(conf) + 'export/locale/%s.%s?format=%s' % (
-            translation['locale'], translation['format'], translation['format'])
+        url = get_url(conf) + 'export/locale/%s.%s?format=%s&index=%s' % (
+            translation['locale'], translation['format'], translation['format'], conf['pull'].get('index', 'id') )
 
         token = getattr(args, 'token')
         if not token:
