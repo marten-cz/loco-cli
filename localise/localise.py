@@ -41,7 +41,7 @@ def get_configuration(args):
         sys.exit()
 
     with open(config_file, 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
     return cfg
 
