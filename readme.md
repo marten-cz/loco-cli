@@ -7,11 +7,15 @@
 
 ## Run the cli command
 
-### Requirements
+    docker run --rm -ti -v $(pwd):/app loco-cli pull
+
+### Install from source and develop new features
+
+#### Requirements
 
 This package need python to be installed. We support Python2 and Python3 as well.
 
-### Install
+#### Install
 
 To instal you can use the repository or install the package from PyPI.
 
