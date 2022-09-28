@@ -16,7 +16,7 @@ def get_url(conf):
 def config(args):
     from os.path import expanduser
     home = expanduser("~")
-    config_file = home + '/.localise/config.yml'
+    config_file = os.getcwd() + '/.loco-cli.yml'
     if hasattr(args, 'config_file') and args.config_file:
         config_file = args.config_file
 
